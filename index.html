@@ -1,29 +1,766 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>Cyber Security Presentation - view-photos.org</title>
-    <style>
-        body {
-            font-family: 'Google Sans', Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #0b57d0, #1f1f1f);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionToValue | Visual Impact Educational Non-Profit</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
         }
-        h1 { font-size: 3rem; margin-bottom: 10px; }
-        p { font-size: 1.2rem; color: #c2e7ff; }
-        .subdomain-badge { background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
     </style>
 </head>
-<body>
-    <div class="subdomain-badge">presentation.view-photos.org</div>
-    <h1>Cyber Security Presentation</h1>
-    <p>Welcome to the main slide deck and demonstration!</p>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 ease-out bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700 max-w-md">
+        <div id="toast-icon" class="text-brand-500">
+            <i data-lucide="check-circle" class="w-6 h-6"></i>
+        </div>
+        <div id="toast-message" class="text-sm font-medium leading-tight">
+            Action completed successfully!
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="camera" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-heading text-xl font-bold tracking-tight text-slate-900">Vision<span class="text-brand-600">Proof</span></span>
+                    <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Non-Profit Org</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#about" class="hover:text-brand-600 transition-colors">Our Mission</a>
+                <a href="#how-it-works" class="hover:text-brand-600 transition-colors">How It Works</a>
+                <a href="#partners" class="hover:text-brand-600 transition-colors">Partners</a>
+                <a href="#projects" class="hover:text-brand-600 transition-colors">Active Projects</a>
+                <a href="#impact" class="hover:text-brand-600 transition-colors">Impact & Proof</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="hidden md:flex items-center space-x-4">
+                <button onclick="openModal('partner')" class="text-sm font-semibold text-slate-700 hover:text-brand-600 px-4 py-2 transition-colors">
+                    Partner With Us
+                </button>
+                <button onclick="openModal('donate')" class="bg-gradient-to-r from-brand-600 to-teal-600 hover:from-brand-700 hover:to-teal-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-brand-600/20 hover:shadow-brand-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                    Donate Now
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors" aria-label="Toggle Navigation">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-3">
+            <a href="#about" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Our Mission</a>
+            <a href="#how-it-works" class="block py-2 text-slate-600 font-medium hover:text-brand-600">How It Works</a>
+            <a href="#partners" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Partners</a>
+            <a href="#projects" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Active Projects</a>
+            <a href="#impact" class="block py-2 text-slate-600 font-medium hover:text-brand-600">Impact & Proof</a>
+            <div class="pt-4 border-t border-slate-100 flex flex-col space-y-3">
+                <button onclick="openModal('partner')" class="w-full text-center py-2.5 font-semibold text-slate-700 bg-slate-50 rounded-xl">Partner With Us</button>
+                <button onclick="openModal('donate')" class="w-full text-center py-2.5 font-semibold text-white bg-brand-600 rounded-xl shadow-md">Donate Now</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-32 bg-gradient-to-b from-teal-50/50 via-slate-50 to-slate-50">
+        <!-- Decorative Grid Background -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Hero Text -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-brand-50 border border-brand-200/80 rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold text-brand-700 shadow-sm">
+                        <span class="flex h-2 w-2 rounded-full bg-brand-500 animate-pulse"></span>
+                        <span>100% Transparent Educational Giving</span>
+                    </div>
+
+                    <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+                        See the real impact of your support in <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-500">every single photo.</span>
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        We bridge the gap between passionate donors and underfunded classrooms. Every time you back a project, we deliver supplies directly and send you visual proof of students thriving.
+                    </p>
+
+                    <!-- Hero Call To Actions -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <button onclick="scrollToSection('projects')" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-xl shadow-brand-600/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                            <span>Explore Classrooms</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+                        </button>
+                        <button onclick="openModal('partner')" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-slate-800 font-semibold text-base border border-slate-200 shadow-sm transition-all">
+                            <i data-lucide="handshake" class="w-5 h-5 mr-2 text-brand-600"></i>
+                            <span>Partner Organizations</span>
+                        </button>
+                    </div>
+
+                    <!-- Mini Trust Badge -->
+                    <div class="pt-4 border-t border-slate-200/60 flex items-center justify-center lg:justify-start space-x-6 text-xs text-slate-500 font-medium">
+                        <div class="flex items-center"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-500 mr-1.5"></i> Verified Non-Profit</div>
+                        <div class="flex items-center"><i data-lucide="camera" class="w-4 h-4 text-brand-500 mr-1.5"></i> Visual Proof Guarantee</div>
+                        <div class="flex items-center"><i data-lucide="heart" class="w-4 h-4 text-rose-500 mr-1.5"></i> Direct Classroom Funding</div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Visual Grid -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Main Card Photo -->
+                        <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
+                            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80" alt="Students in classroom with art supplies" class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                                <span class="inline-block bg-brand-500 text-slate-950 font-bold text-xs px-2.5 py-1 rounded-md mb-2 w-max">VERIFIED PROOF</span>
+                                <p class="text-base font-semibold">Oakridge Elementary received 25 new Digital Drawing Tablets</p>
+                                <p class="text-xs text-slate-300 mt-1 flex items-center"><i data-lucide="map-pin" class="w-3.5 h-3.5 mr-1"></i> Funded by 14 Donors via DonorsChoose Partner</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating Secondary Photo Card -->
+                        <div class="absolute -bottom-8 -left-6 z-20 hidden sm:block w-52 glass-card p-3 rounded-2xl shadow-xl border border-white/60">
+                            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80" alt="Teacher interacting with student" class="w-full h-28 object-cover rounded-xl mb-2">
+                            <p class="text-xs font-bold text-slate-800 line-clamp-1">Ms. Davis' STEM Lab</p>
+                            <p class="text-[10px] text-emerald-600 font-semibold flex items-center"><i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> 100% Photos Delivered</p>
+                        </div>
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -top-6 -right-6 z-20 bg-amber-400 text-slate-900 font-heading font-extrabold p-4 rounded-2xl shadow-xl rotate-3 flex items-center space-x-2">
+                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            <div>
+                                <div class="text-lg leading-tight">10,000+</div>
+                                <div class="text-[10px] uppercase font-bold tracking-wider">Photos Shared</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section class="bg-slate-900 text-white py-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <div class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-500 mb-1">1,420+</div>
+                    <div class="text-sm sm:text-base text-slate-400 font-medium">Classrooms Funded</div>
+                </div>
+                <div class="p-4">
+                    <div class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-amber-400 mb-1">18,500+</div>
+                    <div class="text-sm sm:text-base text-slate-400 font-medium">Verified Impact Photos</div>
+                </div>
+                <div class="p-4">
+                    <div class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-teal-400 mb-1">$2.8M</div>
+                    <div class="text-sm sm:text-base text-slate-400 font-medium">Direct Grants Delivered</div>
+                </div>
+                <div class="p-4">
+                    <div class="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-rose-400 mb-1">99.4%</div>
+                    <div class="text-sm sm:text-base text-slate-400 font-medium">Donor Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partner Organizations Section (Highlighting DonorsChoose) -->
+    <section id="partners" class="py-16 bg-slate-100/70 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-600">Collaborative Ecosystem</span>
+                <h2 class="font-heading text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Partnering with Leading Organizations</h2>
+                <p class="text-slate-600 text-sm mt-2">We integrate directly with established educational networks to ensure transparency and seamless supply fulfillment.</p>
+            </div>
+
+            <!-- Partner Cards Grid -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- DonorsChoose Highlight Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-brand-200 relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
+                    <div class="absolute top-0 right-0 bg-brand-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">KEY PARTNER</div>
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xl font-heading">
+                                DC
+                            </div>
+                            <div>
+                                <h3 class="font-heading font-bold text-slate-900 text-lg">DonorsChoose</h3>
+                                <p class="text-xs text-slate-500">Public School Crowdfunding Platform</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            We co-sponsor classroom requests listed on DonorsChoose, adding our proprietary visual confirmation loop so donors receive high-resolution photo updates directly from teachers.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-brand-600 font-semibold">
+                        <span>Integrated Verification Partner</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <!-- EdTech For All Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition-all">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl font-heading">
+                                EA
+                            </div>
+                            <div>
+                                <h3 class="font-heading font-bold text-slate-900 text-lg">EdTech Alliance</h3>
+                                <p class="text-xs text-slate-500">Hardware & Digital Tools</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Provides discounted hardware, software, and creative tools for design, arts, and science classrooms in underserved school districts.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                        <span>Equipment Partner</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+
+                <!-- National Art Education Alliance -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between group hover:shadow-md transition-all">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl font-heading">
+                                NA
+                            </div>
+                            <div>
+                                <h3 class="font-heading font-bold text-slate-900 text-lg">Creative Futures</h3>
+                                <p class="text-xs text-slate-500">Design & Arts Mentorship</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Connects industry design professionals with K-12 educators to mentor students and review real-world classroom design projects.
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                        <span>Curriculum Partner</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works (Visual Transparency Process) -->
+    <section id="how-it-works" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-600">The Transparency Loop</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mt-2">How We Guarantee Proof of Your Impact</h2>
+                <p class="text-slate-600 text-base mt-3">No mystery. No vague reports. See exactly where your contribution goes in three simple steps.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Step 1 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200/80 relative flex flex-col items-center text-center group hover:bg-brand-50/50 hover:border-brand-200 transition-all">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-600 text-white flex items-center justify-center font-heading font-bold text-2xl shadow-lg shadow-brand-600/30 mb-6 group-hover:scale-110 transition-transform">
+                        1
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-slate-900 mb-3">You Back a Classroom</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Choose a verified teacher project or contribute to our general classroom supply fund through partners like DonorsChoose.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200/80 relative flex flex-col items-center text-center group hover:bg-brand-50/50 hover:border-brand-200 transition-all">
+                    <div class="w-16 h-16 rounded-2xl bg-teal-600 text-white flex items-center justify-center font-heading font-bold text-2xl shadow-lg shadow-teal-600/30 mb-6 group-hover:scale-110 transition-transform">
+                        2
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-slate-900 mb-3">Direct Supply Delivery</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        100% of your gift is turned into physical goods—laptops, art kits, books—and shipped straight to the teacher's classroom door.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200/80 relative flex flex-col items-center text-center group hover:bg-brand-50/50 hover:border-brand-200 transition-all">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-heading font-bold text-2xl shadow-lg shadow-amber-500/30 mb-6 group-hover:scale-110 transition-transform">
+                        3
+                    </div>
+                    <h3 class="font-heading font-bold text-xl text-slate-900 mb-3">Visual Proof Sent to You</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Teachers take photos of students actively using the funded materials and write a personalized thank-you update delivered right to your inbox.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Projects & Impact Gallery (Interactive Filter) -->
+    <section id="projects" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-brand-600">Active Opportunities</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mt-1">Classrooms Needing Backing Today</h2>
+                </div>
+
+                <!-- Filter Category Buttons -->
+                <div class="flex flex-wrap gap-2 mt-4 md:mt-0" id="filter-buttons">
+                    <button onclick="filterProjects('all')" class="filter-btn active bg-brand-600 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">All Projects</button>
+                    <button onclick="filterProjects('design')" class="filter-btn bg-white text-slate-600 hover:bg-slate-100 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-200 transition-all">Design & Arts</button>
+                    <button onclick="filterProjects('stem')" class="filter-btn bg-white text-slate-600 hover:bg-slate-100 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-200 transition-all">STEM & Tech</button>
+                    <button onclick="filterProjects('literacy')" class="filter-btn bg-white text-slate-600 hover:bg-slate-100 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-200 transition-all">Books & Literacy</button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Project Card 1 -->
+                <div class="project-card design bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80" alt="Art students working" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Design & Arts</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-xs font-semibold text-slate-400 mb-1">Lincoln High School • Chicago, IL</div>
+                            <h3 class="font-heading font-bold text-slate-900 text-lg mb-2">Graphic Tablets for High School Designers</h3>
+                            <p class="text-slate-600 text-sm line-clamp-2">Providing 15 digital stylus pads for aspiring teenage UI designers to learn web standards.</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mt-6 space-y-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-brand-700">$1,200 raised</span>
+                                    <span class="text-slate-500">80% of $1,500</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-brand-500 h-full rounded-full" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('donate', 'Graphic Tablets for High School Designers')" class="w-full bg-slate-900 hover:bg-brand-600 text-white text-xs font-bold py-3 rounded-xl transition-colors">Back This Project</button>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="project-card stem bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" alt="Robotics lab" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md">STEM & Tech</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-xs font-semibold text-slate-400 mb-1">Eastside Middle School • Austin, TX</div>
+                            <h3 class="font-heading font-bold text-slate-900 text-lg mb-2">Robotics Kits for Middle School Innovators</h3>
+                            <p class="text-slate-600 text-sm line-clamp-2">Hands-on coding and robotics kits to teach 6th graders basic automation and teamwork.</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mt-6 space-y-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-brand-700">$650 raised</span>
+                                    <span class="text-slate-500">50% of $1,300</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-brand-500 h-full rounded-full" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('donate', 'Robotics Kits for Middle School Innovators')" class="w-full bg-slate-900 hover:bg-brand-600 text-white text-xs font-bold py-3 rounded-xl transition-colors">Back This Project</button>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="project-card literacy bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80" alt="Children reading books" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Books & Literacy</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-xs font-semibold text-slate-400 mb-1">PS 142 Elementary • Brooklyn, NY</div>
+                            <h3 class="font-heading font-bold text-slate-900 text-lg mb-2">Diverse Classroom Library Upgrade</h3>
+                            <p class="text-slate-600 text-sm line-clamp-2">120 new illustrated children's books representing diverse backgrounds and storytelling.</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mt-6 space-y-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span class="text-brand-700">$720 raised</span>
+                                    <span class="text-slate-500">90% of $800</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-brand-500 h-full rounded-full" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('donate', 'Diverse Classroom Library Upgrade')" class="w-full bg-slate-900 hover:bg-brand-600 text-white text-xs font-bold py-3 rounded-xl transition-colors">Back This Project</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Proof Gallery Showcase (Photo Updates Donors Received) -->
+    <section id="impact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-brand-600">Visual Results Archive</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mt-1">Real Photos Sent To Our Donors</h2>
+                <p class="text-slate-600 text-sm sm:text-base mt-2">Here is a sample of actual photographic updates sent directly to supporters after supplies were delivered.</p>
+            </div>
+
+            <!-- Photo Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80" alt="Students with new books" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent p-6 flex flex-col justify-end text-white">
+                        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Photo Proof Update #842</span>
+                        <h4 class="font-heading font-bold text-base">"The new art books arrived!"</h4>
+                        <p class="text-xs text-slate-300 mt-1">Sent to 22 donors on Oct 14</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md bg-slate-900">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Students working on laptops" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent p-6 flex flex-col justify-end text-white">
+                        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Photo Proof Update #791</span>
+                        <h4 class="font-heading font-bold text-base">"First Web Design Sprint"</h4>
+                        <p class="text-xs text-slate-300 mt-1">Sent to 41 donors on Sep 28</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md bg-slate-900 sm:col-span-2 lg:col-span-1">
+                    <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=600&q=80" alt="Science class experiment" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent p-6 flex flex-col justify-end text-white">
+                        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Photo Proof Update #915</span>
+                        <h4 class="font-heading font-bold text-base">"Microscopes in Action"</h4>
+                        <p class="text-xs text-slate-300 mt-1">Sent to 18 donors on Nov 2</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial / Quote Section -->
+    <section class="py-20 bg-gradient-to-br from-brand-900 to-slate-900 text-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <i data-lucide="quote" class="w-12 h-12 text-brand-500/40 mx-auto mb-6"></i>
+            <blockquote class="font-heading text-2xl sm:text-3xl lg:text-4xl font-medium leading-relaxed mb-8">
+                "Getting actual photos of students holding the art supplies we funded completely changed our perspective on charitable giving. You don't just hope for impact—you see it immediately."
+            </blockquote>
+            <div class="flex items-center justify-center space-x-4">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Donor avatar" class="w-12 h-12 rounded-full border-2 border-brand-500 object-cover">
+                <div class="text-left">
+                    <div class="font-bold text-base">Elena Rostova</div>
+                    <div class="text-xs text-slate-400">Monthly Non-Profit Supporter & Design Lead</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action Footer Banner -->
+    <section class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-brand-600 to-teal-600 rounded-3xl p-8 sm:p-12 text-white flex flex-col lg:flex-row items-center justify-between shadow-2xl relative overflow-hidden">
+                <div class="space-y-3 text-center lg:text-left max-w-xl">
+                    <h2 class="font-heading text-3xl font-extrabold">Ready to fund visual progress?</h2>
+                    <p class="text-brand-100 text-sm sm:text-base">Join over 10,000+ donors who directly transform student learning experiences daily.</p>
+                </div>
+                <div class="mt-8 lg:mt-0 flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                    <button onclick="openModal('donate')" class="bg-white hover:bg-slate-100 text-slate-900 font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all text-center">
+                        Make a Donation
+                    </button>
+                    <button onclick="openModal('partner')" class="bg-brand-700/60 hover:bg-brand-700 text-white font-semibold px-8 py-3.5 rounded-xl border border-white/20 transition-all text-center">
+                        Become a Partner
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white">
+                            <i data-lucide="camera" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-heading text-lg font-bold text-white">VisionProof</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        A transparent educational non-profit bridging donors and public school classrooms with photo proof verification.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="text-white font-semibold text-xs uppercase tracking-wider mb-4">Organization</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#about" class="hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a></li>
+                        <li><a href="#partners" class="hover:text-white transition-colors">DonorsChoose Partnership</a></li>
+                        <li><a href="#projects" class="hover:text-white transition-colors">Explore Classrooms</a></li>
+                    </ul>
+                </div>
+
+                <!-- Transparency -->
+                <div>
+                    <h5 class="text-white font-semibold text-xs uppercase tracking-wider mb-4">Transparency</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-white transition-colors">Financial Reports</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Photo Verification Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Teacher Grant Portal</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy & Child Safety</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Social -->
+                <div>
+                    <h5 class="text-white font-semibold text-xs uppercase tracking-wider mb-4">Connect</h5>
+                    <p class="text-xs text-slate-400 mb-3">Questions about partner programs?</p>
+                    <a href="mailto:hello@visionproof.org" class="text-brand-400 text-xs font-semibold hover:underline">hello@visionproof.org</a>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-slate-400 hover:text-white"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="text-slate-400 hover:text-white"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 text-center text-[11px] text-slate-500">
+                &copy; 2026 VisionProof Non-Profit Organization. Designed for Educational Design Class Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Donation & Partnership Modal -->
+    <div id="action-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl border border-slate-100 transform transition-all">
+            <!-- Modal Close Button -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Modal Content (Dynamic) -->
+            <div id="modal-content-donate" class="space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Back A Classroom</span>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mt-1" id="modal-project-title">Direct Classroom Gift</h3>
+                    <p class="text-xs text-slate-500 mt-1">100% of your contribution goes directly to supplies + visual photo updates.</p>
+                </div>
+
+                <!-- Preset Donation Amounts -->
+                <div class="grid grid-cols-4 gap-2" id="donation-amounts">
+                    <button onclick="selectAmount(this, 25)" class="amount-btn border-2 border-brand-600 bg-brand-50 text-brand-700 font-bold py-2.5 rounded-xl text-sm">$25</button>
+                    <button onclick="selectAmount(this, 50)" class="amount-btn border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm hover:border-brand-500">$50</button>
+                    <button onclick="selectAmount(this, 100)" class="amount-btn border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm hover:border-brand-500">$100</button>
+                    <button onclick="selectAmount(this, 250)" class="amount-btn border-2 border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm hover:border-brand-500">$250</button>
+                </div>
+
+                <form onsubmit="handleFormSubmit(event, 'donate')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Your Full Name</label>
+                        <input type="text" required placeholder="Alex Morgan" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address (For Photo Proof Delivery)</label>
+                        <input type="email" required placeholder="alex@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-brand-600/30 transition-all text-sm">
+                        Complete Secure Contribution
+                    </button>
+                </form>
+            </div>
+
+            <!-- Partner Modal Content -->
+            <div id="modal-content-partner" class="space-y-6 hidden">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Organization Inquiry</span>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 mt-1">Partner With VisionProof</h3>
+                    <p class="text-xs text-slate-500 mt-1">Join partners like DonorsChoose to expand verified classroom grants.</p>
+                </div>
+
+                <form onsubmit="handleFormSubmit(event, 'partner')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Organization / School Name</label>
+                        <input type="text" required placeholder="e.g. Metro Education Foundation" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Work Email</label>
+                        <input type="email" required placeholder="contact@organization.org" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">How can we work together?</label>
+                        <textarea rows="3" placeholder="Tell us about your educational grant goals..." class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 hover:bg-brand-600 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-sm">
+                        Submit Partner Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth Scroll Helper
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if(section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Project Filter Functionality
+        function filterProjects(category) {
+            const cards = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // Update Active Button State
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-600');
+            });
+            event.target.classList.remove('bg-white', 'text-slate-600');
+            event.target.classList.add('bg-brand-600', 'text-white');
+
+            // Filter Cards
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal Functionality
+        function openModal(type, projectTitle = null) {
+            const modal = document.getElementById('action-modal');
+            const donateContent = document.getElementById('modal-content-donate');
+            const partnerContent = document.getElementById('modal-content-partner');
+            const titleElem = document.getElementById('modal-project-title');
+
+            modal.classList.remove('hidden');
+
+            if (type === 'donate') {
+                donateContent.classList.remove('hidden');
+                partnerContent.classList.add('hidden');
+                titleElem.innerText = projectTitle ? projectTitle : "Direct Classroom Grant";
+            } else {
+                partnerContent.classList.remove('hidden');
+                donateContent.classList.add('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('action-modal').classList.add('hidden');
+        }
+
+        function selectAmount(btn, amount) {
+            const btns = document.querySelectorAll('.amount-btn');
+            btns.forEach(b => {
+                b.classList.remove('border-brand-600', 'bg-brand-50', 'text-brand-700');
+                b.classList.add('border-slate-200', 'text-slate-700');
+            });
+            btn.classList.remove('border-slate-200', 'text-slate-700');
+            btn.classList.add('border-brand-600', 'bg-brand-50', 'text-brand-700');
+        }
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 4000);
+        }
+
+        // Form Submission Handling
+        function handleFormSubmit(event, type) {
+            event.preventDefault();
+            closeModal();
+            if (type === 'donate') {
+                showToast("Thank you for your backing! You will receive photo updates soon.");
+            } else {
+                showToast("Partner inquiry received! Our partnership team will respond within 24h.");
+            }
+        }
+    </script>
 </body>
 </html>
